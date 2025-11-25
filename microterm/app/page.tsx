@@ -116,7 +116,7 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col pb-20 selection:bg-blue-500/20">
       {/* Premium Glass Header - Enhanced */}
-      <header className="fixed top-0 left-0 right-0 z-40 bg-[#030305]/90 backdrop-blur-2xl border-b border-white/5 transition-all duration-300">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-[#030305]/70 backdrop-blur-2xl border-b border-white/5 transition-all duration-300">
         {/* Subtle gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-violet-600/5 to-purple-600/5 pointer-events-none" />
 
@@ -180,9 +180,9 @@ export default function Home() {
       <div className="h-16 md:h-18" />
 
       {/* Category Navigation - Google News Style */}
-      <nav className="sticky top-16 md:top-18 z-30 backdrop-blur-xl border-b border-white/5">
+      <nav className="sticky top-16 md:top-18 z-30 bg-[#030305]/45 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-3">
+          <div className="flex items-center justify-center gap-1 overflow-x-auto scrollbar-hide py-3">
             {categories.map((category) => {
               const IconComponent = category.icon;
               return (
