@@ -12,31 +12,48 @@ import { TokenGateBanner } from "@/components/token-gate-banner";
 import { NFTGallery } from "@/components/nft-gallery";
 import { ShareButton } from "@/components/share-button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FileText, Activity, Zap, TrendingUp, Newspaper, Home as HomeIcon, Briefcase, Layers, BarChart3, Scale } from "lucide-react";
+import {
+  FileText,
+  Activity,
+  Zap,
+  TrendingUp,
+  Newspaper,
+  Home as HomeIcon,
+  Briefcase,
+  Layers,
+  BarChart3,
+  Scale,
+} from "lucide-react";
 import { useDeals, useAlerts, useNews, WhaleAlert } from "@/lib/hooks/use-data";
 
 type NewsCategory = "all" | "deals" | "defi" | "markets" | "regulation";
 
 // Generate deterministic gradient based on title and sentiment
 function getNewsImageGradient(title: string, sentiment?: string) {
-  const hash = title.split('').reduce((acc, char) => {
+  const hash = title.split("").reduce((acc, char) => {
     return char.charCodeAt(0) + ((acc << 5) - acc);
   }, 0);
-  
+
   const hue1 = Math.abs(hash % 360);
   const hue2 = (hue1 + 60) % 360;
-  
+
   // Adjust colors based on sentiment
   let saturation = 70;
   let lightness = 45;
-  
-  if (sentiment === 'Bullish') {
-    return `linear-gradient(135deg, hsl(140, ${saturation}%, ${lightness}%), hsl(170, ${saturation}%, ${lightness - 10}%))`;
-  } else if (sentiment === 'Bearish') {
-    return `linear-gradient(135deg, hsl(0, ${saturation}%, ${lightness}%), hsl(20, ${saturation}%, ${lightness - 10}%))`;
+
+  if (sentiment === "Bullish") {
+    return `linear-gradient(135deg, hsl(140, ${saturation}%, ${lightness}%), hsl(170, ${saturation}%, ${
+      lightness - 10
+    }%))`;
+  } else if (sentiment === "Bearish") {
+    return `linear-gradient(135deg, hsl(0, ${saturation}%, ${lightness}%), hsl(20, ${saturation}%, ${
+      lightness - 10
+    }%))`;
   }
-  
-  return `linear-gradient(135deg, hsl(${hue1}, ${saturation}%, ${lightness}%), hsl(${hue2}, ${saturation}%, ${lightness - 10}%))`;
+
+  return `linear-gradient(135deg, hsl(${hue1}, ${saturation}%, ${lightness}%), hsl(${hue2}, ${saturation}%, ${
+    lightness - 10
+  }%))`;
 }
 
 export default function Home() {
@@ -163,7 +180,7 @@ export default function Home() {
       <div className="h-16 md:h-18" />
 
       {/* Category Navigation - Google News Style */}
-      <nav className="sticky top-16 md:top-18 z-30 bg-[#030305]/95 backdrop-blur-xl border-b border-white/5">
+      <nav className="sticky top-16 md:top-18 z-30 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-3">
             {categories.map((category) => {
@@ -194,449 +211,169 @@ export default function Home() {
 
       {/* Main Content Container */}
       <div className="flex-1 max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8 py-6 md:py-8">
-        
         {/* HOME VIEW - Your Briefing + All Content */}
-        {activeCategory === 'all' && (
-        <div className="space-y-8">
-          {/* Your Briefing Section */}
-          <section className="space-y-6">
-            <div className="flex items-start justify-between gap-4">
-              <div className="space-y-1">
-                <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">Your briefing</h2>
-                <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-                  Curated market stories, private deals, and on-chain flows in one view
-                </p>
+        {activeCategory === "all" && (
+          <div className="space-y-8">
+            {/* Your Briefing Section */}
+            <section className="space-y-6">
+              <div className="flex items-start justify-between gap-4">
+                <div className="space-y-1">
+                  <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                    Your briefing
+                  </h2>
+                  <p className="text-sm md:text-base text-slate-400 leading-relaxed">
+                    Curated market stories, private deals, and on-chain flows in
+                    one view
+                  </p>
+                </div>
+                <span className="text-sm text-slate-400 whitespace-nowrap mt-1">
+                  {mounted
+                    ? new Date().toLocaleDateString("en-US", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "short",
+                      })
+                    : "Loading..."}
+                </span>
               </div>
-              <span className="text-sm text-slate-400 whitespace-nowrap mt-1">
-                {mounted ? new Date().toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  day: 'numeric',
-                  month: 'short',
-                }) : 'Loading...'}
-              </span>
-            </div>
 
-            {newsLoading || !topStory ? (
-              <div className="web3-card p-6 grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8">
-                <div className="md:col-span-2">
-                  <Skeleton className="h-56 md:h-64 w-full bg-white/5 rounded-xl" />
-                </div>
-                <div className="md:col-span-3 space-y-4">
-                  <Skeleton className="h-5 w-32 bg-white/5 rounded-full" />
-                  <Skeleton className="h-8 w-3/4 bg-white/5" />
-                  <Skeleton className="h-5 w-full bg-white/5" />
-                  <Skeleton className="h-5 w-5/6 bg-white/5" />
-                  <div className="pt-4 border-t border-white/5">
-                    <Skeleton className="h-8 w-24 bg-white/5 rounded-full" />
+              {newsLoading || !topStory ? (
+                <div className="web3-card p-6 grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8">
+                  <div className="md:col-span-2">
+                    <Skeleton className="h-56 md:h-64 w-full bg-white/5 rounded-xl" />
                   </div>
-                </div>
-              </div>
-            ) : (
-              <a
-                href={topStory.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block"
-              >
-                <div className="web3-card overflow-hidden grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 p-6">
-                  <div 
-                    className="relative md:col-span-2 h-56 md:h-64 rounded-xl overflow-hidden flex items-center justify-center"
-                    style={{ background: getNewsImageGradient(topStory.title, topStory.sentiment) }}
-                  >
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
-                    <div className="relative z-10 text-white/90 text-center p-6">
-                      <Newspaper className="w-14 h-14 mx-auto mb-3 opacity-60" />
-                      <p className="text-sm font-medium opacity-75">{topStory.source}</p>
-                    </div>
-                  </div>
-                  <div className="md:col-span-3 flex flex-col justify-between gap-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2.5 text-xs">
-                        <span className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-medium">
-                          Top story
-                        </span>
-                        <span className="text-slate-500">
-                          {topStory.source} •{' '}
-                          {new Date(topStory.published_at).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
-                        </span>
-                      </div>
-                      <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-blue-100 leading-tight tracking-tight">
-                        {topStory.title}
-                      </h3>
-                      <p className="text-base md:text-lg text-slate-300 leading-relaxed">
-                        {topStory.summary}
-                      </p>
-                    </div>
-                    <div className="flex items-center justify-between text-sm pt-4 border-t border-white/5">
-                      <span
-                        className={`px-3 py-1.5 rounded-full font-medium ${
-                          topStory.sentiment === 'Bullish'
-                            ? 'bg-green-500/10 text-green-400 border border-green-500/20'
-                            : topStory.sentiment === 'Bearish'
-                              ? 'bg-red-500/10 text-red-400 border border-red-500/20'
-                              : 'bg-slate-500/10 text-slate-400 border border-slate-500/20'
-                        }`}
-                      >
-                        {topStory.sentiment}
-                      </span>
-                      <span className="text-slate-400 group-hover:text-slate-300 transition-colors flex items-center gap-1">
-                        Read on source ↗
-                      </span>
+                  <div className="md:col-span-3 space-y-4">
+                    <Skeleton className="h-5 w-32 bg-white/5 rounded-full" />
+                    <Skeleton className="h-8 w-3/4 bg-white/5" />
+                    <Skeleton className="h-5 w-full bg-white/5" />
+                    <Skeleton className="h-5 w-5/6 bg-white/5" />
+                    <div className="pt-4 border-t border-white/5">
+                      <Skeleton className="h-8 w-24 bg-white/5 rounded-full" />
                     </div>
                   </div>
                 </div>
-              </a>
-            )}
-          </section>
-
-        {/* For you section - Horizontal scroll */}
-        {activeCategory === 'all' && (
-          <section className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">For you</h2>
-                <span className="text-lg text-slate-500">›</span>
-              </div>
-              <p className="text-sm text-slate-400 hidden md:block">Recommended based on your interests</p>
-            </div>
-
-            <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4">
-              {newsLoading ? (
-                Array(4).fill(0).map((_, i) => (
-                  <div key={i} className="web3-card min-w-[320px] p-5 space-y-3">
-                    <Skeleton className="h-5 w-32 bg-white/5" />
-                    <Skeleton className="h-6 w-full bg-white/5" />
-                    <Skeleton className="h-4 w-3/4 bg-white/5" />
-                  </div>
-                ))
               ) : (
-                remainingNews.slice(0, 4).map((item) => (
-                  <a
-                    key={item.id}
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group web3-card min-w-[320px] p-5 space-y-3 hover:border-blue-500/30 transition-all duration-200"
-                  >
-                    <div className="flex items-center gap-2 text-xs text-slate-500">
-                      <span className="font-medium">{item.source}</span>
-                      <span>•</span>
-                      <span>{new Date(item.published_at).toLocaleDateString()}</span>
-                    </div>
-                    <h3 className="text-base font-semibold text-white group-hover:text-blue-100 leading-snug line-clamp-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-slate-400 line-clamp-2 leading-relaxed">
-                      {item.summary}
-                    </p>
-                    <div className="flex items-center justify-between pt-2">
-                      <span
-                        className={`text-xs font-medium px-2 py-1 rounded-full ${
-                          item.sentiment === 'Bullish'
-                            ? 'bg-green-500/10 text-green-400'
-                            : item.sentiment === 'Bearish'
-                              ? 'bg-red-500/10 text-red-400'
-                              : 'bg-slate-500/10 text-slate-400'
-                        }`}
-                      >
-                        {item.sentiment}
-                      </span>
-                      <span className="text-xs text-slate-500 group-hover:text-slate-300 transition-colors">
-                        Read more →
-                      </span>
-                    </div>
-                  </a>
-                ))
-              )}
-            </div>
-          </section>
-
-          {/* Home Page Grid Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
-            {/* Left Column (Feeds) - Span 7 */}
-            <div className="lg:col-span-7 space-y-10">
-              <TokenGateBanner />
-
-              {/* SEC Filings */}
-              <section>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                <span className="p-1.5 rounded bg-blue-500/10 text-blue-400">
-                  <FileText className="w-4 h-4" />
-                </span>
-                Private Deal Flow
-              </h2>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
-                Live Feed
-              </span>
-            </div>
-
-            <div className="space-y-4">
-              {dealsLoading
-                ? Array(3)
-                    .fill(0)
-                    .map((_, i) => (
-                      <div key={i} className="web3-card p-6 space-y-3">
-                        <Skeleton className="h-6 w-2/3 bg-white/5" />
-                        <Skeleton className="h-4 w-1/3 bg-white/5" />
-                        <Skeleton className="h-20 w-full bg-white/5" />
+                <a
+                  href={topStory.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block"
+                >
+                  <div className="web3-card overflow-hidden grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 p-6">
+                    <div
+                      className="relative md:col-span-2 h-56 md:h-64 rounded-xl overflow-hidden flex items-center justify-center"
+                      style={{
+                        background: getNewsImageGradient(
+                          topStory.title,
+                          topStory.sentiment
+                        ),
+                      }}
+                    >
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
+                      <div className="relative z-10 text-white/90 text-center p-6">
+                        <Newspaper className="w-14 h-14 mx-auto mb-3 opacity-60" />
+                        <p className="text-sm font-medium opacity-75">
+                          {topStory.source}
+                        </p>
                       </div>
-                    ))
-                : deals?.map((deal) => (
-                    <BlurredCard
-                      key={deal.id}
-                      id={deal.id.toString()}
-                      title={deal.company_name}
-                      description={`${deal.sector} • Filed ${new Date(
-                        deal.filed_at
-                      ).toLocaleDateString()}`}
-                      type="deal"
-                      cost={0.5}
-                      preview={
-                        <div className="grid grid-cols-3 gap-4 py-2 opacity-50">
-                          <div className="space-y-1">
-                            <div className="text-xs text-slate-500">Amount</div>
-                            <div className="h-4 w-16 bg-slate-700/50 rounded animate-pulse" />
-                          </div>
-                          <div className="space-y-1">
-                            <div className="text-xs text-slate-500">
-                              Valuation
-                            </div>
-                            <div className="h-4 w-16 bg-slate-700/50 rounded animate-pulse" />
-                          </div>
-                          <div className="space-y-1">
-                            <div className="text-xs text-slate-500">
-                              Investors
-                            </div>
-                            <div className="h-4 w-16 bg-slate-700/50 rounded animate-pulse" />
-                          </div>
-                        </div>
-                      }
-                      fullContent={
-                        <div className="space-y-4">
-                          <div className="grid grid-cols-3 gap-4 p-3 bg-white/5 rounded-lg border border-white/5">
-                            <div>
-                              <div className="text-xs text-slate-400 mb-1">
-                                Raised
-                              </div>
-                              <div className="text-lg font-bold text-white">
-                                ${(deal.amount_raised / 1000000).toFixed(1)}M
-                              </div>
-                            </div>
-                            <div>
-                              <div className="text-xs text-slate-400 mb-1">
-                                Sector
-                              </div>
-                              <div className="text-sm font-medium text-blue-300">
-                                {deal.sector}
-                              </div>
-                            </div>
-                            <div>
-                              <div className="text-xs text-slate-400 mb-1">
-                                Source
-                              </div>
-                              <a
-                                href={deal.filing_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-xs text-blue-400 hover:text-blue-300 underline"
-                              >
-                                SEC.gov ↗
-                              </a>
-                            </div>
-                          </div>
-                          <div className="pt-1">
-                            <SummaryButton
-                              type="deal"
-                              itemId={deal.id.toString()}
-                              data={deal}
-                            />
-                          </div>
-                        </div>
-                      }
-                    />
-                  ))}
-            </div>
-              </section>
-
-              {/* Whale Alerts */}
-              <section>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                <span className="p-1.5 rounded bg-violet-500/10 text-violet-400">
-                  <Activity className="w-4 h-4" />
-                </span>
-                Whale Activity
-              </h2>
-            </div>
-            <div className="space-y-4">
-              {alertsLoading
-                ? Array(3)
-                    .fill(0)
-                    .map((_, i) => (
-                      <div key={i} className="web3-card p-6 space-y-3">
-                        <Skeleton className="h-6 w-2/3 bg-white/5" />
-                        <Skeleton className="h-4 w-1/3 bg-white/5" />
-                      </div>
-                    ))
-                : alerts?.map((alert) => (
-                    <BlurredCard
-                      key={alert.id}
-                      id={alert.id.toString()}
-                      title={`${alert.token_symbol} Movement`}
-                      description={`${alert.sender_label} → ${alert.receiver_label}`}
-                      type="alert"
-                      cost={0.25}
-                      preview={
-                        <div className="flex items-center justify-between py-2 opacity-50">
-                          <div className="space-y-1">
-                            <div className="text-xs text-slate-500">Value</div>
-                            <div className="h-5 w-24 bg-slate-700/50 rounded animate-pulse" />
-                          </div>
-                          <div className="h-8 w-24 bg-slate-700/30 rounded animate-pulse" />
-                        </div>
-                      }
-                      fullContent={
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/5">
-                            <div>
-                              <div className="text-xs text-slate-400 mb-1">
-                                Transaction Value
-                              </div>
-                              <div className="text-lg font-bold text-white tracking-tight">
-                                {alert.amount.toLocaleString()}{" "}
-                                <span className="text-violet-400">
-                                  {alert.token_symbol}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <div className="text-xs text-slate-500 font-mono">
-                                {alert.tx_hash.slice(0, 8)}...
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-3">
-                            {alert.is_tradeable && alert.token_address && (
-                              <QuickSwapButton
-                                tokenAddress={alert.token_address}
-                                tokenSymbol={alert.token_symbol}
-                                onClick={() => handleCopyTrade(alert)}
-                              />
+                    </div>
+                    <div className="md:col-span-3 flex flex-col justify-between gap-6">
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2.5 text-xs">
+                          <span className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-medium">
+                            Top story
+                          </span>
+                          <span className="text-slate-500">
+                            {topStory.source} •{" "}
+                            {new Date(topStory.published_at).toLocaleTimeString(
+                              [],
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
                             )}
-                            <div
-                              className={alert.is_tradeable ? "" : "col-span-2"}
-                            >
-                              <SummaryButton
-                                type="alert"
-                                itemId={alert.id.toString()}
-                                data={alert}
-                              />
-                            </div>
-                          </div>
+                          </span>
                         </div>
-                      }
-                    />
-                  ))}
-            </div>
-              </section>
-            </div>
-
-            {/* Right Column (News & Agent) - Span 5 */}
-            <div className="lg:col-span-5 space-y-8">
-              {/* Agent Card */}
-              <div className="web3-card p-6 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-blue-500/20 transition-all duration-500" />
-
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-500/20 animate-pulse">
-                  <Zap className="w-5 h-5 text-white fill-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-white">Autonomous Agent</h3>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="text-xs text-slate-400">
-                      Monitoring Markets
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <p className="text-sm text-slate-400 mb-6 leading-relaxed">
-                Your agent is scanning SEC filings and whale movements in
-                real-time. Give it a command to automate your research.
-              </p>
-
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  onClick={() => setCommandBarOpen(true)}
-                  className="btn-glass text-sm font-medium text-white"
-                >
-                  Command (⌘K)
-                </button>
-                <button
-                  onClick={() => setAgentMonitorOpen(true)}
-                  className="btn-glass text-sm font-medium text-blue-300 bg-blue-500/10 border-blue-500/20"
-                >
-                  View Logs
-                </button>
-              </div>
-            </div>
-              </div>
-
-              {/* News Feed */}
-              <section>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                <span className="p-1.5 rounded bg-green-500/10 text-green-400">
-                  <Newspaper className="w-4 h-4" />
-                </span>
-                Market Intelligence
-              </h2>
-            </div>
-
-            <div className="space-y-4">
-              {newsLoading
-                ? Array(3)
-                    .fill(0)
-                    .map((_, i) => (
-                      <div key={i} className="web3-card p-6 space-y-3">
-                        <Skeleton className="h-4 w-full bg-white/5" />
-                        <Skeleton className="h-4 w-2/3 bg-white/5" />
+                        <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-blue-100 leading-tight tracking-tight">
+                          {topStory.title}
+                        </h3>
+                        <p className="text-base md:text-lg text-slate-300 leading-relaxed">
+                          {topStory.summary}
+                        </p>
                       </div>
-                    ))
-                : news?.map((item) => (
-                    <BlurredCard
-                      key={item.id}
-                      id={item.id.toString()}
-                      title={item.title}
-                      description={`${item.source} • ${new Date(
-                        item.published_at
-                      ).toLocaleTimeString()}`}
-                      type="news"
-                      cost={0.1}
-                      preview={
-                        <div className="space-y-2 opacity-50">
-                          <div className="h-3 w-full bg-slate-700/30 rounded" />
-                          <div className="h-3 w-3/4 bg-slate-700/30 rounded" />
-                          <div className="flex gap-2 mt-2">
-                            <div className="h-4 w-16 bg-slate-700/30 rounded-full" />
-                            <div className="h-4 w-16 bg-slate-700/30 rounded-full" />
+                      <div className="flex items-center justify-between text-sm pt-4 border-t border-white/5">
+                        <span
+                          className={`px-3 py-1.5 rounded-full font-medium ${
+                            topStory.sentiment === "Bullish"
+                              ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                              : topStory.sentiment === "Bearish"
+                              ? "bg-red-500/10 text-red-400 border border-red-500/20"
+                              : "bg-slate-500/10 text-slate-400 border border-slate-500/20"
+                          }`}
+                        >
+                          {topStory.sentiment}
+                        </span>
+                        <span className="text-slate-400 group-hover:text-slate-300 transition-colors flex items-center gap-1">
+                          Read on source ↗
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              )}
+            </section>
+
+            {/* For you section - Horizontal scroll */}
+            {activeCategory === "all" && (
+              <section className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                      For you
+                    </h2>
+                    <span className="text-lg text-slate-500">›</span>
+                  </div>
+                  <p className="text-sm text-slate-400 hidden md:block">
+                    Recommended based on your interests
+                  </p>
+                </div>
+
+                <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4">
+                  {newsLoading
+                    ? Array(4)
+                        .fill(0)
+                        .map((_, i) => (
+                          <div
+                            key={i}
+                            className="web3-card min-w-[320px] p-5 space-y-3"
+                          >
+                            <Skeleton className="h-5 w-32 bg-white/5" />
+                            <Skeleton className="h-6 w-full bg-white/5" />
+                            <Skeleton className="h-4 w-3/4 bg-white/5" />
                           </div>
-                        </div>
-                      }
-                      fullContent={
-                        <div className="space-y-4">
-                          <p className="text-sm text-slate-300 leading-relaxed">
+                        ))
+                    : remainingNews.slice(0, 4).map((item) => (
+                        <a
+                          key={item.id}
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group web3-card min-w-[320px] p-5 space-y-3 hover:border-blue-500/30 transition-all duration-200"
+                        >
+                          <div className="flex items-center gap-2 text-xs text-slate-500">
+                            <span className="font-medium">{item.source}</span>
+                            <span>•</span>
+                            <span>
+                              {new Date(item.published_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <h3 className="text-base font-semibold text-white group-hover:text-blue-100 leading-snug line-clamp-2">
+                            {item.title}
+                          </h3>
+                          <p className="text-sm text-slate-400 line-clamp-2 leading-relaxed">
                             {item.summary}
                           </p>
-                          <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                          <div className="flex items-center justify-between pt-2">
                             <span
                               className={`text-xs font-medium px-2 py-1 rounded-full ${
                                 item.sentiment === "Bullish"
@@ -648,46 +385,366 @@ export default function Home() {
                             >
                               {item.sentiment}
                             </span>
-                            <a
-                              href={item.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs text-slate-500 hover:text-white transition-colors"
-                            >
-                              Source ↗
-                            </a>
+                            <span className="text-xs text-slate-500 group-hover:text-slate-300 transition-colors">
+                              Read more →
+                            </span>
                           </div>
-                          <div className="pt-1">
-                            <SummaryButton
-                              type="news"
-                              itemId={item.id.toString()}
-                              data={item}
-                            />
-                          </div>
-                        </div>
-                      }
-                    />
-                  ))}
-            </div>
+                        </a>
+                      ))}
+                </div>
               </section>
+            )}
 
-              {/* NFT Gallery */}
-              <section>
-                <NFTGallery />
-              </section>
+            {/* Home Page Grid Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+              {/* Left Column (Feeds) - Span 7 */}
+              <div className="lg:col-span-7 space-y-10">
+                <TokenGateBanner />
+
+                {/* SEC Filings */}
+                <section>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                      <span className="p-1.5 rounded bg-blue-500/10 text-blue-400">
+                        <FileText className="w-4 h-4" />
+                      </span>
+                      Private Deal Flow
+                    </h2>
+                    <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                      Live Feed
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    {dealsLoading
+                      ? Array(3)
+                          .fill(0)
+                          .map((_, i) => (
+                            <div key={i} className="web3-card p-6 space-y-3">
+                              <Skeleton className="h-6 w-2/3 bg-white/5" />
+                              <Skeleton className="h-4 w-1/3 bg-white/5" />
+                              <Skeleton className="h-20 w-full bg-white/5" />
+                            </div>
+                          ))
+                      : deals?.map((deal) => (
+                          <BlurredCard
+                            key={deal.id}
+                            id={deal.id.toString()}
+                            title={deal.company_name}
+                            description={`${deal.sector} • Filed ${new Date(
+                              deal.filed_at
+                            ).toLocaleDateString()}`}
+                            type="deal"
+                            cost={0.5}
+                            preview={
+                              <div className="grid grid-cols-3 gap-4 py-2 opacity-50">
+                                <div className="space-y-1">
+                                  <div className="text-xs text-slate-500">
+                                    Amount
+                                  </div>
+                                  <div className="h-4 w-16 bg-slate-700/50 rounded animate-pulse" />
+                                </div>
+                                <div className="space-y-1">
+                                  <div className="text-xs text-slate-500">
+                                    Valuation
+                                  </div>
+                                  <div className="h-4 w-16 bg-slate-700/50 rounded animate-pulse" />
+                                </div>
+                                <div className="space-y-1">
+                                  <div className="text-xs text-slate-500">
+                                    Investors
+                                  </div>
+                                  <div className="h-4 w-16 bg-slate-700/50 rounded animate-pulse" />
+                                </div>
+                              </div>
+                            }
+                            fullContent={
+                              <div className="space-y-4">
+                                <div className="grid grid-cols-3 gap-4 p-3 bg-white/5 rounded-lg border border-white/5">
+                                  <div>
+                                    <div className="text-xs text-slate-400 mb-1">
+                                      Raised
+                                    </div>
+                                    <div className="text-lg font-bold text-white">
+                                      $
+                                      {(deal.amount_raised / 1000000).toFixed(
+                                        1
+                                      )}
+                                      M
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className="text-xs text-slate-400 mb-1">
+                                      Sector
+                                    </div>
+                                    <div className="text-sm font-medium text-blue-300">
+                                      {deal.sector}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className="text-xs text-slate-400 mb-1">
+                                      Source
+                                    </div>
+                                    <a
+                                      href={deal.filing_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-xs text-blue-400 hover:text-blue-300 underline"
+                                    >
+                                      SEC.gov ↗
+                                    </a>
+                                  </div>
+                                </div>
+                                <div className="pt-1">
+                                  <SummaryButton
+                                    type="deal"
+                                    itemId={deal.id.toString()}
+                                    data={deal}
+                                  />
+                                </div>
+                              </div>
+                            }
+                          />
+                        ))}
+                  </div>
+                </section>
+
+                {/* Whale Alerts */}
+                <section>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                      <span className="p-1.5 rounded bg-violet-500/10 text-violet-400">
+                        <Activity className="w-4 h-4" />
+                      </span>
+                      Whale Activity
+                    </h2>
+                  </div>
+                  <div className="space-y-4">
+                    {alertsLoading
+                      ? Array(3)
+                          .fill(0)
+                          .map((_, i) => (
+                            <div key={i} className="web3-card p-6 space-y-3">
+                              <Skeleton className="h-6 w-2/3 bg-white/5" />
+                              <Skeleton className="h-4 w-1/3 bg-white/5" />
+                            </div>
+                          ))
+                      : alerts?.map((alert) => (
+                          <BlurredCard
+                            key={alert.id}
+                            id={alert.id.toString()}
+                            title={`${alert.token_symbol} Movement`}
+                            description={`${alert.sender_label} → ${alert.receiver_label}`}
+                            type="alert"
+                            cost={0.25}
+                            preview={
+                              <div className="flex items-center justify-between py-2 opacity-50">
+                                <div className="space-y-1">
+                                  <div className="text-xs text-slate-500">
+                                    Value
+                                  </div>
+                                  <div className="h-5 w-24 bg-slate-700/50 rounded animate-pulse" />
+                                </div>
+                                <div className="h-8 w-24 bg-slate-700/30 rounded animate-pulse" />
+                              </div>
+                            }
+                            fullContent={
+                              <div className="space-y-4">
+                                <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/5">
+                                  <div>
+                                    <div className="text-xs text-slate-400 mb-1">
+                                      Transaction Value
+                                    </div>
+                                    <div className="text-lg font-bold text-white tracking-tight">
+                                      {alert.amount.toLocaleString()}{" "}
+                                      <span className="text-violet-400">
+                                        {alert.token_symbol}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className="text-right">
+                                    <div className="text-xs text-slate-500 font-mono">
+                                      {alert.tx_hash.slice(0, 8)}...
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-3">
+                                  {alert.is_tradeable &&
+                                    alert.token_address && (
+                                      <QuickSwapButton
+                                        tokenAddress={alert.token_address}
+                                        tokenSymbol={alert.token_symbol}
+                                        onClick={() => handleCopyTrade(alert)}
+                                      />
+                                    )}
+                                  <div
+                                    className={
+                                      alert.is_tradeable ? "" : "col-span-2"
+                                    }
+                                  >
+                                    <SummaryButton
+                                      type="alert"
+                                      itemId={alert.id.toString()}
+                                      data={alert}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            }
+                          />
+                        ))}
+                  </div>
+                </section>
+              </div>
+
+              {/* Right Column (News & Agent) - Span 5 */}
+              <div className="lg:col-span-5 space-y-8">
+                {/* Agent Card */}
+                <div className="web3-card p-6 relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-blue-500/20 transition-all duration-500" />
+
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-500/20 animate-pulse">
+                        <Zap className="w-5 h-5 text-white fill-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-white">
+                          Autonomous Agent
+                        </h3>
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                          <span className="text-xs text-slate-400">
+                            Monitoring Markets
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-slate-400 mb-6 leading-relaxed">
+                      Your agent is scanning SEC filings and whale movements in
+                      real-time. Give it a command to automate your research.
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        onClick={() => setCommandBarOpen(true)}
+                        className="btn-glass text-sm font-medium text-white"
+                      >
+                        Command (⌘K)
+                      </button>
+                      <button
+                        onClick={() => setAgentMonitorOpen(true)}
+                        className="btn-glass text-sm font-medium text-blue-300 bg-blue-500/10 border-blue-500/20"
+                      >
+                        View Logs
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* News Feed */}
+                <section>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                      <span className="p-1.5 rounded bg-green-500/10 text-green-400">
+                        <Newspaper className="w-4 h-4" />
+                      </span>
+                      Market Intelligence
+                    </h2>
+                  </div>
+
+                  <div className="space-y-4">
+                    {newsLoading
+                      ? Array(3)
+                          .fill(0)
+                          .map((_, i) => (
+                            <div key={i} className="web3-card p-6 space-y-3">
+                              <Skeleton className="h-4 w-full bg-white/5" />
+                              <Skeleton className="h-4 w-2/3 bg-white/5" />
+                            </div>
+                          ))
+                      : news?.map((item) => (
+                          <BlurredCard
+                            key={item.id}
+                            id={item.id.toString()}
+                            title={item.title}
+                            description={`${item.source} • ${new Date(
+                              item.published_at
+                            ).toLocaleTimeString()}`}
+                            type="news"
+                            cost={0.1}
+                            preview={
+                              <div className="space-y-2 opacity-50">
+                                <div className="h-3 w-full bg-slate-700/30 rounded" />
+                                <div className="h-3 w-3/4 bg-slate-700/30 rounded" />
+                                <div className="flex gap-2 mt-2">
+                                  <div className="h-4 w-16 bg-slate-700/30 rounded-full" />
+                                  <div className="h-4 w-16 bg-slate-700/30 rounded-full" />
+                                </div>
+                              </div>
+                            }
+                            fullContent={
+                              <div className="space-y-4">
+                                <p className="text-sm text-slate-300 leading-relaxed">
+                                  {item.summary}
+                                </p>
+                                <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                                  <span
+                                    className={`text-xs font-medium px-2 py-1 rounded-full ${
+                                      item.sentiment === "Bullish"
+                                        ? "bg-green-500/10 text-green-400"
+                                        : item.sentiment === "Bearish"
+                                        ? "bg-red-500/10 text-red-400"
+                                        : "bg-slate-500/10 text-slate-400"
+                                    }`}
+                                  >
+                                    {item.sentiment}
+                                  </span>
+                                  <a
+                                    href={item.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs text-slate-500 hover:text-white transition-colors"
+                                  >
+                                    Source ↗
+                                  </a>
+                                </div>
+                                <div className="pt-1">
+                                  <SummaryButton
+                                    type="news"
+                                    itemId={item.id.toString()}
+                                    data={item}
+                                  />
+                                </div>
+                              </div>
+                            }
+                          />
+                        ))}
+                  </div>
+                </section>
+
+                {/* NFT Gallery */}
+                <section>
+                  <NFTGallery />
+                </section>
+              </div>
             </div>
           </div>
-        </div>
         )}
 
         {/* DEAL FLOW VIEW - Only SEC Filings/Deals */}
-        {activeCategory === 'deals' && (
+        {activeCategory === "deals" && (
           <div className="space-y-6">
             <div className="flex items-start justify-between gap-4 mb-8">
               <div className="space-y-1">
-                <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">Private Deal Flow</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                  Private Deal Flow
+                </h2>
                 <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-                  Exclusive access to SEC filings and private investment opportunities
+                  Exclusive access to SEC filings and private investment
+                  opportunities
                 </p>
               </div>
             </div>
@@ -713,48 +770,22 @@ export default function Home() {
                       ).toLocaleDateString()}`}
                       type="deal"
                       cost={0.5}
+                      fullContent={`Amount Raised: $${(
+                        deal.amount_raised / 1000000
+                      ).toFixed(1)}M\nSector: ${deal.sector}\nFiled: ${new Date(
+                        deal.filed_at
+                      ).toLocaleDateString()}\n\nView full SEC filing for complete details.`}
                       preview={
-                        <div className="grid grid-cols-3 gap-4 py-2 opacity-50">
+                        <div className="grid grid-cols-2 gap-4 py-2 opacity-50">
                           <div className="space-y-1">
-                            <div className="text-xs text-slate-500">Amount</div>
-                            <div className="h-4 w-16 bg-slate-700/50 rounded animate-pulse" />
-                          </div>
-                          <div className="space-y-1">
-                            <div className="text-xs text-slate-500">Valuation</div>
-                            <div className="h-4 w-16 bg-slate-700/50 rounded animate-pulse" />
+                            <div className="text-xs text-slate-500">
+                              Amount Raised
+                            </div>
+                            <div className="h-4 w-20 bg-slate-700/50 rounded animate-pulse" />
                           </div>
                           <div className="space-y-1">
-                            <div className="text-xs text-slate-500">Stage</div>
-                            <div className="h-4 w-16 bg-slate-700/50 rounded animate-pulse" />
-                          </div>
-                        </div>
-                      }
-                      content={
-                        <div className="space-y-4">
-                          <div className="grid grid-cols-3 gap-4 py-2">
-                            <div className="space-y-1">
-                              <div className="text-xs text-slate-500">Amount</div>
-                              <div className="text-sm font-semibold text-white">
-                                ${(deal.amount / 1000000).toFixed(1)}M
-                              </div>
-                            </div>
-                            <div className="space-y-1">
-                              <div className="text-xs text-slate-500">Valuation</div>
-                              <div className="text-sm font-semibold text-white">
-                                ${(deal.valuation / 1000000).toFixed(1)}M
-                              </div>
-                            </div>
-                            <div className="space-y-1">
-                              <div className="text-xs text-slate-500">Stage</div>
-                              <div className="text-sm font-semibold text-white">
-                                {deal.stage}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="pt-3 border-t border-white/10">
-                            <p className="text-sm text-slate-300 leading-relaxed">
-                              {deal.description}
-                            </p>
+                            <div className="text-xs text-slate-500">Sector</div>
+                            <div className="h-4 w-20 bg-slate-700/50 rounded animate-pulse" />
                           </div>
                         </div>
                       }
@@ -765,11 +796,13 @@ export default function Home() {
         )}
 
         {/* DEFI VIEW - Only Whale Alerts */}
-        {activeCategory === 'defi' && (
+        {activeCategory === "defi" && (
           <div className="space-y-6">
             <div className="flex items-start justify-between gap-4 mb-8">
               <div className="space-y-1">
-                <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">Whale Activity</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                  Whale Activity
+                </h2>
                 <p className="text-sm md:text-base text-slate-400 leading-relaxed">
                   Track large on-chain movements and copy trade opportunities
                 </p>
@@ -790,32 +823,33 @@ export default function Home() {
                 : alerts?.map((alert) => (
                     <div key={alert.id} className="web3-card p-6 space-y-4">
                       <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                alert.transaction_type === "buy"
-                                  ? "bg-green-500/10 text-green-400"
-                                  : "bg-red-500/10 text-red-400"
-                              }`}
-                            >
-                              {alert.transaction_type.toUpperCase()}
-                            </span>
+                        <div className="flex-1 space-y-3">
+                          <div className="flex items-center gap-3">
                             <span className="text-sm font-semibold text-white">
-                              ${(alert.amount_usd / 1000000).toFixed(2)}M
+                              {alert.amount.toLocaleString()}{" "}
+                              {alert.token_symbol}
                             </span>
                           </div>
-                          <h3 className="text-lg font-bold text-white">
-                            {alert.token_symbol}
-                          </h3>
-                          <p className="text-sm text-slate-400">
-                            {alert.description}
-                          </p>
+                          <div className="space-y-1">
+                            <h3 className="text-lg font-bold text-white">
+                              {alert.token_symbol} Movement
+                            </h3>
+                            <p className="text-sm text-slate-400">
+                              From:{" "}
+                              {alert.sender_label ||
+                                alert.sender_address.slice(0, 10) + "..."}
+                            </p>
+                            <p className="text-sm text-slate-400">
+                              To:{" "}
+                              {alert.receiver_label ||
+                                alert.receiver_address.slice(0, 10) + "..."}
+                            </p>
+                          </div>
                           <div className="flex items-center gap-4 text-xs text-slate-500">
-                            <span>{alert.blockchain}</span>
+                            <span>TX: {alert.tx_hash.slice(0, 10)}...</span>
                             <span>•</span>
                             <span>
-                              {new Date(alert.detected_at).toLocaleString()}
+                              {new Date(alert.timestamp).toLocaleString()}
                             </span>
                           </div>
                         </div>
@@ -834,17 +868,19 @@ export default function Home() {
         )}
 
         {/* MARKETS VIEW - Only Market News */}
-        {(activeCategory === 'markets' || activeCategory === 'regulation') && (
+        {(activeCategory === "markets" || activeCategory === "regulation") && (
           <div className="space-y-6">
             <div className="flex items-start justify-between gap-4 mb-8">
               <div className="space-y-1">
                 <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
-                  {activeCategory === 'markets' ? 'Market Intelligence' : 'Regulation News'}
+                  {activeCategory === "markets"
+                    ? "Market Intelligence"
+                    : "Regulation News"}
                 </h2>
                 <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-                  {activeCategory === 'markets' 
-                    ? 'Latest market trends, analysis, and trading insights'
-                    : 'Regulatory updates and compliance news'}
+                  {activeCategory === "markets"
+                    ? "Latest market trends, analysis, and trading insights"
+                    : "Regulatory updates and compliance news"}
                 </p>
               </div>
             </div>
@@ -870,12 +906,19 @@ export default function Home() {
                     >
                       <div
                         className="relative h-40 rounded-lg overflow-hidden flex items-center justify-center"
-                        style={{ background: getNewsImageGradient(item.title, item.sentiment) }}
+                        style={{
+                          background: getNewsImageGradient(
+                            item.title,
+                            item.sentiment
+                          ),
+                        }}
                       >
                         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
                         <div className="relative z-10 text-white/90 text-center p-4">
                           <Newspaper className="w-10 h-10 mx-auto mb-2 opacity-60" />
-                          <p className="text-xs font-medium opacity-75">{item.source}</p>
+                          <p className="text-xs font-medium opacity-75">
+                            {item.source}
+                          </p>
                         </div>
                       </div>
                       <div className="space-y-3">
@@ -898,8 +941,8 @@ export default function Home() {
                               item.sentiment === "Bullish"
                                 ? "bg-green-500/10 text-green-400"
                                 : item.sentiment === "Bearish"
-                                  ? "bg-red-500/10 text-red-400"
-                                  : "bg-slate-500/10 text-slate-400"
+                                ? "bg-red-500/10 text-red-400"
+                                : "bg-slate-500/10 text-slate-400"
                             }`}
                           >
                             {item.sentiment}
