@@ -157,9 +157,9 @@ export function WalletConnect() {
         )}
 
         {/* Disconnect Button */}
-        <WalletDropdownDisconnect className="!flex !items-center !gap-2 !px-3 !py-2.5 !rounded-lg !text-red-400 hover:!text-red-300 hover:!bg-red-500/10 !transition-all !duration-200 !border !border-red-500/20 hover:!border-red-500/40">
-          <Power className="w-4 h-4" />
-          <span className="text-sm font-medium">Disconnect</span>
+        <WalletDropdownDisconnect className="!flex !items-center !justify-center !gap-2 !px-3 !py-2.5 !rounded-xl !bg-red-500/10 !text-red-500 hover:!bg-red-500 hover:!text-white !transition-all !duration-200 !w-full !font-semibold !mt-2 group">
+          <Power className="w-4 h-4 group-hover:scale-110 transition-transform" />
+          <span className="text-sm">Disconnect Wallet</span>
         </WalletDropdownDisconnect>
       </WalletDropdown>
     </Wallet>

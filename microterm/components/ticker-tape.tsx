@@ -47,7 +47,7 @@ export function TickerTape() {
 
   return (
     <div className="bg-zinc-900 border-b border-zinc-800 py-3 px-4 overflow-hidden">
-      <div className="flex items-center gap-8 animate-scroll">
+      <div className="flex items-center gap-8 animate-scroll w-max">
         {duplicatedData.map((data, index) => (
           <div key={`${data.symbol}-${index}`} className="flex items-center gap-2 whitespace-nowrap">
             <span className="text-terminal-cyan font-bold">${data.symbol}:</span>
