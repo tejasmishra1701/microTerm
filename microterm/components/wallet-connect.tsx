@@ -47,68 +47,73 @@ export function WalletConnect() {
 
   return (
     <Wallet>
-      <ConnectWallet>
-        {/* Before Connection State */}
-        {!isConnected && !isConnecting && (
-          <button className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-600 via-violet-600 to-purple-600 px-6 font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25 active:scale-95">
-            {/* Animated gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-            
-            {/* Shimmer effect */}
-            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-            
-            {/* Content */}
-            <div className="relative flex items-center gap-2">
-              <div className="p-1.5 rounded-full bg-white/20 backdrop-blur-sm">
-                <WalletIcon className="w-4 h-4" />
-              </div>
-              <span className="text-sm font-semibold tracking-wide">Connect Wallet</span>
-              <Sparkles className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity" />
-            </div>
-          </button>
-        )}
-
-        {/* Connecting State */}
-        {isConnecting && (
-          <button className="relative inline-flex h-10 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-600/80 via-violet-600/80 to-purple-600/80 px-6 font-medium text-white cursor-wait">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              <span className="text-sm font-semibold">Connecting...</span>
-            </div>
-          </button>
-        )}
-
-        {/* After Connection State */}
-        {isConnected && address && (
-          <button className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-full bg-[#0A0A0F] border border-white/10 px-4 font-medium text-white transition-all duration-300 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10">
-            {/* Subtle gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-violet-600/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            
-            {/* Content */}
-            <div className="relative flex items-center gap-2.5">
-              {/* Status indicator */}
-              <div className="relative">
-                <div className="w-2 h-2 rounded-full bg-green-500 shadow-lg shadow-green-500/50" />
-                <div className="absolute inset-0 w-2 h-2 rounded-full bg-green-500 animate-ping opacity-75" />
-              </div>
+      <ConnectWallet 
+        text={!isConnected ? "Connect Wallet" : `${address?.slice(0, 6)}...${address?.slice(-4)}`}
+        className="[&>button]:!hidden"
+      >
+        <div className="relative">
+          {/* Before Connection State */}
+          {!isConnected && !isConnecting && (
+            <button className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-600 via-violet-600 to-purple-600 px-6 font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25 active:scale-95">
+              {/* Animated gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
               
-              {/* Address */}
-              <div className="flex flex-col items-start">
-                <span className="text-xs font-mono text-slate-400 leading-none mb-0.5">
-                  {address.slice(0, 6)}...{address.slice(-4)}
-                </span>
-                {balance && (
-                  <span className="text-[10px] font-semibold text-blue-400 leading-none">
-                    {formatBalance(balance.formatted)} {balance.symbol}
+              {/* Shimmer effect */}
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              
+              {/* Content */}
+              <div className="relative flex items-center gap-2">
+                <div className="p-1.5 rounded-full bg-white/20 backdrop-blur-sm">
+                  <WalletIcon className="w-4 h-4" />
+                </div>
+                <span className="text-sm font-semibold tracking-wide">Connect Wallet</span>
+                <Sparkles className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity" />
+              </div>
+            </button>
+          )}
+
+          {/* Connecting State */}
+          {isConnecting && (
+            <button className="relative inline-flex h-10 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-600/80 via-violet-600/80 to-purple-600/80 px-6 font-medium text-white cursor-wait">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span className="text-sm font-semibold">Connecting...</span>
+              </div>
+            </button>
+          )}
+
+          {/* After Connection State */}
+          {isConnected && address && (
+            <button className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-full bg-[#0A0A0F] border border-white/10 px-4 font-medium text-white transition-all duration-300 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10">
+              {/* Subtle gradient background */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-violet-600/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              {/* Content */}
+              <div className="relative flex items-center gap-2.5">
+                {/* Status indicator */}
+                <div className="relative">
+                  <div className="w-2 h-2 rounded-full bg-green-500 shadow-lg shadow-green-500/50" />
+                  <div className="absolute inset-0 w-2 h-2 rounded-full bg-green-500 animate-ping opacity-75" />
+                </div>
+                
+                {/* Address */}
+                <div className="flex flex-col items-start">
+                  <span className="text-xs font-mono text-slate-400 leading-none mb-0.5">
+                    {address.slice(0, 6)}...{address.slice(-4)}
                   </span>
-                )}
+                  {balance && (
+                    <span className="text-[10px] font-semibold text-blue-400 leading-none">
+                      {formatBalance(balance.formatted)} {balance.symbol}
+                    </span>
+                  )}
+                </div>
+                
+                {/* Dropdown indicator */}
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-white transition-colors" />
               </div>
-              
-              {/* Dropdown indicator */}
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-white transition-colors" />
-            </div>
-          </button>
-        )}
+            </button>
+          )}
+        </div>
       </ConnectWallet>
 
       {/* Enhanced Dropdown Menu */}
