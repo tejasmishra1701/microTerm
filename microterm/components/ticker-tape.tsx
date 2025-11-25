@@ -22,15 +22,24 @@ export function TickerTape() {
     // Fetch market data from API
     const fetchMarketData = async () => {
       try {
-        const response = await fetch('/api/market');
+        const response = await fetch('/api/market', {
+          signal: AbortSignal.timeout(5000), // 5 second timeout
+        });
         if (response.ok) {
           const data = await response.json();
-          if (data && data.length > 0) {
+          if (data && Array.isArray(data) && data.length > 0) {
             setMarketData(data);
           }
         }
       } catch (error) {
-        console.error('Error fetching market data:', error);
+        // Silently fail - keep using default/previous data
+        // Don't log errors to avoid console spam
+        if (error instanceof Error && error.name !== 'AbortError') {
+          // Only log non-timeout errors in development
+          if (process.env.NODE_ENV === 'development') {
+            console.debug('Market data fetch failed, using cached data');
+          }
+        }
       }
     };
 
