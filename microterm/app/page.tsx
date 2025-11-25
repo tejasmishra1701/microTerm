@@ -166,20 +166,23 @@ export default function Home() {
       <nav className="sticky top-16 md:top-18 z-30 bg-[#030305]/95 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-3">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
-                  activeCategory === category.id
-                    ? "bg-blue-500/20 text-blue-300 border border-blue-500/30"
-                    : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
-                }`}
-              >
-                <span className="text-base">{category.icon}</span>
-                <span>{category.label}</span>
-              </button>
-            ))}
+            {categories.map((category) => {
+              const IconComponent = category.icon;
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                    activeCategory === category.id
+                      ? "bg-blue-500/20 text-blue-300 border border-blue-500/30 shadow-lg shadow-blue-500/10"
+                      : "text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent"
+                  }`}
+                >
+                  <IconComponent className="w-4 h-4" />
+                  <span>{category.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </nav>
@@ -190,10 +193,12 @@ export default function Home() {
       </div>
 
       {/* Main Content Container */}
-      <div className="flex-1 max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8 py-6 md:py-8 space-y-8">
+      <div className="flex-1 max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8 py-6 md:py-8">
         
-        {/* Your Briefing Section - Always visible */}
+        {/* HOME VIEW - Your Briefing + All Content */}
         {activeCategory === 'all' && (
+        <div className="space-y-8">
+          {/* Your Briefing Section */}
           <section className="space-y-6">
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-1">
